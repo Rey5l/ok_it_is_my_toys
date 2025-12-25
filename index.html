@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ok, it's my toys — Каталог</title>
+  <link rel="stylesheet" href="project/css/styles.css" />
+  <link rel="stylesheet" href="project/css/modal.css" />
+  <link rel="stylesheet" href="project/css/responsive.css" />
+</head>
+<body>
+  <header class="site-header">
+    <nav class="site-nav" aria-label="Основная навигация">
+      <div class="nav-group nav-group-left">
+        <div class="nav-buttons">
+          <button class="nav-link" type="button" data-open-modal="aboutModal">О бренде</button>
+          <button class="nav-link" type="button" data-open-modal="howtoModal">Как заказать?</button>
+        </div>
+        <div class="nav-icons nav-icons-left">
+          <img src="project/assets/icons/background_icons_1/Group.svg" alt="" class="nav-icon" />
+          <img src="project/assets/icons/background_icons_1/Group-1.svg" alt="" class="nav-icon" />
+          <img src="project/assets/icons/background_icons_1/Group-2.svg" alt="" class="nav-icon" />
+          <img src="project/assets/icons/background_icons_1/Group-3.svg" alt="" class="nav-icon" />
+        </div>
+      </div>
+      <a class="site-logo" href="#" aria-label="Логотип Ok it's my toys">
+        <img src="project/assets/icons/yellow_logo.svg" alt="Ok, it's my toys" />
+      </a>
+      <div class="nav-group nav-group-right">
+        <div class="nav-buttons">
+          <button class="nav-link" type="button" data-open-modal="contactsModal">Контакты</button>
+          <button class="nav-link" type="button" id="openDeliveryModal">Доставка</button>
+        </div>
+        <div class="nav-icons nav-icons-right">
+          <img src="project/assets/icons/background_icons_2/Group.svg" alt="" class="nav-icon" />
+          <img src="project/assets/icons/background_icons_2/Group-2.svg" alt="" class="nav-icon" />
+          <img src="project/assets/icons/background_icons_2/Group-3.svg" alt="" class="nav-icon" />
+          <img src="project/assets/icons/background_icons_2/Group-4.svg" alt="" class="nav-icon" />
+        </div>
+      </div>
+    </nav>
+    <div class="category-line" role="navigation" aria-label="Категории">
+      <button class="category-link category-link-active" type="button">Игрушки</button>
+      <span class="category-separator">|</span>
+      <button class="category-link" type="button">Куклы</button>
+      <span class="category-separator">|</span>
+      <button class="category-link" type="button">Брелоки</button>
+      <span class="category-separator">|</span>
+      <button class="category-link" type="button">Погремушки</button>
+    </div>
+  </header>
+
+  <main class="catalog">
+    <section class="controls">
+      <div class="controls-group">
+        <button class="control-link" type="button" id="filterBtn">Фильтры</button>
+        <button class="control-link" type="button" id="sortBtn">Сортировать</button>
+      </div>
+      <div class="controls-center">
+        <span class="items-count" id="itemsCount">0 товаров</span>
+      </div>
+      <div class="controls-group controls-group-right">
+        <div class="dropdown-wrapper">
+          <button class="control-link dropdown-toggle" type="button" id="sortDropdownBtn">
+            <span>По новизне</span>
+            <span class="dropdown-arrow">▾</span>
+          </button>
+          <ul class="dropdown-menu" id="sortDropdown" hidden>
+            <li><button type="button" data-sort="newest">По новизне</button></li>
+            <li><button type="button" data-sort="price-asc">По цене: сначала дешевые</button></li>
+            <li><button type="button" data-sort="price-desc">По цене: сначала дорогие</button></li>
+            <li><button type="button" data-sort="name-asc">По названию: А-Я</button></li>
+            <li><button type="button" data-sort="name-desc">По названию: Я-А</button></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="products-grid" id="productsGrid" aria-live="polite"></section>
+  </main>
+
+  <div class="modal-overlay" id="modalOverlay" hidden></div>
+
+  <section
+    class="modal product-modal"
+    id="productModal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="productModalTitle"
+    aria-describedby="productModalDescription"
+    hidden
+  >
+    <button class="modal-close" type="button" data-close-modal aria-label="Закрыть модальное окно">×</button>
+    <div class="modal-content">
+      <div class="modal-media">
+        <button class="carousel-control prev" type="button" aria-label="Предыдущее фото">‹</button>
+        <div class="carousel-frame">
+          <img src="" alt="" id="modalProductImage" />
+        </div>
+        <button class="carousel-control next" type="button" aria-label="Следующее фото">›</button>
+      </div>
+      <div class="modal-info">
+        <h2 id="productModalTitle"></h2>
+        <div class="size-switcher" id="sizeSwitcher" role="group" aria-label="Размер"></div>
+        <div class="product-text" id="productModalDescription"></div>
+        <div class="product-details" id="productDetails"></div>
+        <div class="product-options" id="productOptions"></div>
+        <div class="delivery-note">
+          <p>* Доставка не включена в стоимость товара. <button class="link-btn" type="button" id="openDeliveryFromProduct">Подробнее о доставке</button></p>
+        </div>
+        <div class="modal-actions">
+          <button class="primary-btn" type="button" id="preorderBtn">Предзаказ</button>
+          <span class="price-tag" id="modalProductPrice"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section
+    class="modal delivery-modal"
+    id="deliveryModal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="deliveryModalTitle"
+    aria-describedby="deliveryModalDescription"
+    hidden
+  >
+    <button class="modal-close" type="button" data-close-modal aria-label="Закрыть модальное окно">×</button>
+    <div class="modal-content">
+      <header class="delivery-header">
+        <p class="eyebrow">Каждая игрушка отправляется как маленький подарок</p>
+        <h2 id="deliveryModalTitle">Доставка</h2>
+        <p id="deliveryModalDescription">
+          Мы бережно упаковываем каждую работу, чтобы она дошла в целости и сохранности. Выберите удобный способ получения:
+        </p>
+      </header>
+      <div class="delivery-grid">
+        <article class="delivery-card">
+          <img src="project/assets/icons/ozon.svg" alt="Ozon" />
+          <h3>Ozon</h3>
+          <p>Быстро и удобно, прямо к двери</p>
+        </article>
+        <article class="delivery-card">
+          <img src="project/assets/icons/post-office.svg" alt="Почта России" />
+          <h3>Почта России</h3>
+          <p>Отправим в любой уголок страны</p>
+        </article>
+        <article class="delivery-card">
+          <img src="project/assets/icons/dondo.svg" alt="Dondo" />
+          <h3>Dondo</h3>
+          <p>Часть игрушек есть в наличии, уточните заранее</p>
+        </article>
+        <article class="delivery-card">
+          <img src="project/assets/icons/cdek.svg" alt="СДЭК" />
+          <h3>СДЭК</h3>
+          <p>Надёжная служба доставки по всей России</p>
+        </article>
+        <article class="delivery-card">
+          <img src="project/assets/icons/yandex_delivery.svg" alt="Я.Доставка" />
+          <h3>Я.Доставка</h3>
+          <p>Если хочется получить игрушку как можно скорее</p>
+        </article>
+        <article class="delivery-card">
+          <img src="project/assets/icons/pickup.svg" alt="Самовывоз" />
+          <h3>Самовывоз</h3>
+          <p>Можно встретиться лично по договорённости</p>
+        </article>
+      </div>
+      <footer class="delivery-footer">
+        <p>Мы всегда стараемся, чтобы процесс получения был таким же тёплым, как встреча с новой игрушкой.</p>
+        <blockquote>«Где бы вы ни были, ваша игрушка найдёт путь к вам».</blockquote>
+      </footer>
+    </div>
+  </section>
+
+  <section
+    class="modal text-modal"
+    id="aboutModal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="aboutModalTitle"
+    aria-describedby="aboutModalDescription"
+    hidden
+  >
+    <button class="modal-close" type="button" data-close-modal aria-label="Закрыть модальное окно">×</button>
+    <div class="modal-content">
+      <h2 id="aboutModalTitle">О бренде</h2>
+      <p class="eyebrow">— от автора</p>
+      <div id="aboutModalDescription" class="text-modal__body">
+        <p>
+          «История бренда началась с простого детского увлечения, которое однажды стало делом жизни. Меня научила вязать
+          мама — она показала, как держать старый крючок, которым когда-то вязала тюбетейки для братьев».
+        </p>
+        <p>
+          После первого мастер-класса я открыла для себя целый мир: училась, смотрела видео и однажды связала первую игрушку.
+        </p>
+        <p>
+          Игрушки покорили меня сразу и навсегда. Сначала я дарила их детям друзей, позже начала делиться работами в соцсетях.
+          Люди писали, что хотят такие же — так появился собственный бренд.
+        </p>
+        <p>Сегодня каждая игрушка — часть этой истории: тёплой, семейной и сделанной с любовью.</p>
+      </div>
+    </div>
+  </section>
+
+  <section
+    class="modal text-modal"
+    id="howtoModal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="howtoModalTitle"
+    aria-describedby="howtoModalDescription"
+    hidden
+  >
+    <button class="modal-close" type="button" data-close-modal aria-label="Закрыть модальное окно">×</button>
+    <div class="modal-content">
+      <h2 id="howtoModalTitle">Как заказать?</h2>
+      <div id="howtoModalDescription" class="text-modal__body steps">
+        <article>
+          <h3>01</h3>
+          <p>Выберите игрушку в каталоге, которая станет идеальным подарком.</p>
+        </article>
+        <article>
+          <h3>02</h3>
+          <p>Свяжитесь с нами через мессенджеры или соцсети, чтобы уточнить наличие и оформить заказ.</p>
+        </article>
+        <article>
+          <h3>03</h3>
+          <p>Уточните детали: способ доставки, упаковку и персонализацию подарка.</p>
+        </article>
+        <article>
+          <h3>04</h3>
+          <p>Подтвердите заказ — мы обсудим удобный способ оплаты и сроки готовности.</p>
+        </article>
+      </div>
+      <p class="text-muted">
+        Мы делаем процесс покупки максимально простым, приятным и заботливым. Любой вопрос — мы рядом.
+      </p>
+    </div>
+  </section>
+
+  <section
+    class="modal text-modal"
+    id="contactsModal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="contactsModalTitle"
+    aria-describedby="contactsModalDescription"
+    hidden
+  >
+    <button class="modal-close" type="button" data-close-modal aria-label="Закрыть модальное окно">×</button>
+    <div class="modal-content">
+      <h2 id="contactsModalTitle">Контакты</h2>
+      <p id="contactsModalDescription">Хотите уточнить наличие, оформить заказ или выбрать подарок? Мы всегда на связи!</p>
+      <div class="contacts-grid">
+        <article>
+          <img src="project/assets/icons/whatsapp_qr.svg" alt="QR-код WhatsApp" />
+          <h3>WhatsApp</h3>
+          <p>+7 (968) 975‑33‑63</p>
+        </article>
+        <article>
+          <img src="project/assets/icons/telegram_qr.svg" alt="QR-код Telegram" />
+          <h3>Telegram</h3>
+          <p>@okitsmytoys</p>
+        </article>
+        <article>
+          <img src="project/assets/icons/instagram_qr.svg" alt="QR-код Instagram" />
+          <h3>Instagram*</h3>
+          <p>@okitsmytoys</p>
+        </article>
+      </div>
+      <p class="text-muted small-note">*Instagram принадлежит Meta, признанной экстремистской организацией в РФ</p>
+    </div>
+  </section>
+
+  <template id="productCardTemplate">
+    <article class="product-card" tabindex="0">
+      <div class="product-image-wrapper">
+        <img src="" alt="" class="product-image" />
+      </div>
+      <div class="product-info">
+        <h3 class="product-title"></h3>
+        <div class="product-meta">
+          <span class="product-tag"></span>
+          <span class="product-price"></span>
+        </div>
+      </div>
+    </article>
+  </template>
+
+  <script src="project/js/dataLoader.js" defer></script>
+  <script src="project/js/carousel.js" defer></script>
+  <script src="project/js/modal.js" defer></script>
+  <script src="project/js/app.js" defer></script>
+</body>
+</html>
+
